@@ -56,10 +56,19 @@ class LLMService:
 
     def generate_sql(self, user_query: str) -> Tuple[str, Dict[str, int]]:
         system_prompt = """
-You are a SQL Server expert. Given the following database schema, generate a SQL query to answer the user's question.
-Return ONLY the SQL query. No markdown formatting.
+ You are a STRICT SQL generator for an inventory system.
 
-Schema:
+ABSOLUTE RULES (YOU MUST FOLLOW):
+- NEVER use SELECT *
+- NEVER use LIMIT
+- If the question asks for how many / count / total number, you MUST use COUNT(*)
+- If the question asks for totals or value, you MUST use SUM(...)
+- You must generate ONE single SQL query
+- The query MUST directly answer the user's question
+- Do NOT return example data
+- Do NOT return exploratory queries
+
+Database schema:
 - Customers (CustomerId, CustomerCode, CustomerName, Email, Phone, BillingAddress1, BillingCity, BillingCountry, CreatedAt, UpdatedAt, IsActive)
 - Vendors (VendorId, VendorCode, VendorName, Email, Phone, AddressLine1, City, Country, CreatedAt, UpdatedAt, IsActive)
 - Sites (SiteId, SiteCode, SiteName, AddressLine1, City, Country, TimeZone, CreatedAt, UpdatedAt, IsActive)
@@ -73,11 +82,9 @@ Schema:
 - SalesOrderLines (SOLineId, SOId, LineNumber, ItemId, ItemCode, Description, Quantity, UnitPrice)
 - AssetTransactions (AssetTxnId, AssetId, FromLocationId, ToLocationId, TxnType, Quantity, TxnDate, Note)
 
-Rules:
-1. Use SQL Server syntax.
-2. For "how many assets", filter by Status <> 'Disposed'.
-3. Always use JOINs where necessary.
-4. Return ONLY the SQL string. No markdown, no triple backticks.
+Return ONLY the SQL query.
+NO markdown.
+NO explanation.
 """
         messages = [
             {"role": "system", "content": system_prompt},
