@@ -1,36 +1,50 @@
-# nl2sql-ai-agent
+# Inventory Chatbot – NL2SQL AI Agent
 
-An AI agent that converts natural language inventory and business questions
-into **safe SQL Server queries**, while also returning the exact query used
-to answer the question (Present Query).
+An AI-powered inventory chatbot that converts natural language business questions into SQL queries, executes them on a real database, and returns both:
+- the **final natural language answer**
+- and the **exact SQL query used** (“present query”).
 
----
-
-## 🚀 Project Overview
-
-This project is a **minimal AI-powered backend system** designed to:
-- Accept natural language questions from users
-- Understand the user intent
-- Generate the corresponding SQL query
-- Return both:
-  - A human-readable answer
-  - The exact SQL query used to retrieve the answer
-
-The system focuses on **safety, clarity, and system design**, not just chat responses.
+This project demonstrates how to safely combine **LLMs + Databases** for enterprise-style analytics use cases.
 
 ---
 
-## 🧠 Why This Project?
+## 🚀 What This Project Does
 
-Modern companies don’t just need chatbots — they need **AI agents** that:
-- Make decisions
-- Use tools (like databases)
-- Follow strict safety rules
-- Are explainable and auditable
+Users can ask questions like:
+- How many active assets do I have?
+- How many assets by site?
+- Total value of assets per site
 
-This project demonstrates how Large Language Models (LLMs) can be used
-**as a controlled component inside a decision system**, not as an uncontrolled chatbot.
+The system will:
+1. Convert the question to SQL using an LLM
+2. Execute the SQL on the inventory database
+3. Generate a human-readable answer
+4. Return the SQL query for transparency
 
 ---
 
-## 🏗️ System Flow
+## 🧠 System Architecture (High Level)
+
+Natural Language Question  
+→ LLM (NL → SQL)  
+→ Database Execution (SQLite)  
+→ LLM (SQL Result → Answer)  
+→ API Response  
+
+The **database is the source of truth**.  
+The LLM does NOT invent numbers — it only generates SQL and explains results.
+
+---
+
+## 🧱 Tech Stack
+
+- Python 3.10+
+- FastAPI
+- SQLite (local database)
+- OpenAI API (or Azure OpenAI)
+- Pydantic
+- dotenv
+
+---
+
+## 📂 Project Structure
